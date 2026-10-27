@@ -1,0 +1,36 @@
+.page {
+  display: grid;
+  min-height: 100dvh;
+  padding: 16px;
+  place-items: center;
+}
+
+.card {
+  display: grid;
+  gap: 20px;
+  width: 100%;
+  max-width: 400px;
+  padding: 28px 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  /* На телефоне карточка без рамки на весь экран. */
+  .page {
+    align-items: start;
+    padding-top: 48px;
+  }
+
+  .card {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+}

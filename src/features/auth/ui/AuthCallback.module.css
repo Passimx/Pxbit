@@ -1,0 +1,11 @@
+.status {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  color: var(--color-muted);
+}
+
+.back {
+  color: var(--color-accent);
+  font-weight: 500;
+}

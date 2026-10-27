@@ -12,6 +12,8 @@ export default defineConfig({
     env: { NEXT_PUBLIC_API_MOCKS: 'true' },
     setupFiles: ['./vitest.setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],
+    // next-intl импортирует 'next/server' без расширения: Node без бандлера такое не резолвит.
+    server: { deps: { inline: ['next-intl'] } },
     css: { modules: { classNameStrategy: 'non-scoped' } },
   },
 });

@@ -1,0 +1,186 @@
+.root {
+  position: relative;
+}
+
+.placeholder {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-surface-hover);
+}
+
+.trigger {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  max-width: 220px;
+  padding: 4px 10px 4px 4px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.trigger:hover,
+.trigger[aria-expanded='true'] {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
+.trigger:focus-visible,
+.copy:focus-visible,
+.logout:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.triggerName {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Ловит клики мимо панели. На десктопе прозрачный, на мобильном затемняет фон. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 11;
+  display: grid;
+  gap: 16px;
+  width: 280px;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-background);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+}
+
+.panel:focus {
+  outline: none;
+}
+
+.profile {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  text-align: center;
+}
+
+.name {
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+
+.account {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--color-surface);
+}
+
+.label {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.idRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.id {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+  user-select: all;
+}
+
+.copy {
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-accent);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.copy:hover {
+  background: var(--color-surface-hover);
+}
+
+.logout {
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-danger);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.logout:hover:not(:disabled) {
+  background: var(--color-surface-hover);
+}
+
+@media (max-width: 640px) {
+  .triggerName {
+    display: none;
+  }
+
+  .trigger {
+    padding: 4px;
+  }
+
+  .backdrop {
+    background: var(--color-backdrop);
+  }
+
+  /* Шторка снизу: до пальца ближе, чем до верхнего угла. */
+  .panel {
+    position: fixed;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+    border-width: 1px 0 0;
+    border-radius: 16px 16px 0 0;
+    animation: slide-up 0.2s ease-out;
+  }
+
+  .logout {
+    min-height: 48px;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+}

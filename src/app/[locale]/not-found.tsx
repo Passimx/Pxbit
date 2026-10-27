@@ -7,9 +7,11 @@ export default function NotFoundPage() {
   const t = useTranslations('NotFound');
 
   return (
-    <Container>
-      <h1>{t('title')}</h1>
-      <Link href="/">{t('backHome')}</Link>
-    </Container>
+    <main>
+      <Container>
+        <h1>{t('title')}</h1>
+        <Link href="/">{t('backHome')}</Link>
+      </Container>
+    </main>
   );
 }

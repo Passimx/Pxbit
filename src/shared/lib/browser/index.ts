@@ -1,0 +1,1 @@
+export { hardNavigate } from './hardNavigate';

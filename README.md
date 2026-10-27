@@ -48,13 +48,16 @@ messages/              словари переводов: ru.json, en.json, ...
 src/
   app/[locale]/        роуты; всё приложение живёт внутри сегмента локали
   i18n/                настройка next-intl: routing, request, navigation
-  proxy.ts             определение локали и редиректы (бывший middleware)
+  app/[locale]/(app)/  приватная часть с хедером; (auth)/ — вход и OAuth-колбэк
+  proxy.ts             локаль и проверка сессии: без cookie отправляет на /login
   store/               Redux store, типизированные хуки, StoreProvider, baseApi
   widgets/             крупные блоки страницы из фич и сущностей (Header, BalanceCard)
   features/<name>/     действия пользователя: компоненты, стили, тесты, index.ts (display-currency)
   entities/<name>/     доменные модели: zod-схемы, API-эндпоинты, чистая логика (user, wallet)
   shared/              переиспользуемое без бизнес-логики: ui, config, lib
   mocks/               фейковый бэкенд для разработки и тестов
+  test/                общие хелперы тестов (renderWithProviders)
+docs/openapi.yaml      контракт API для бэкенда
 ```
 
 Правила импортов:
@@ -75,7 +78,7 @@ src/
 
 Примеры:
 
-- `src/app/[locale]/page.tsx` и `src/widgets/Header/Header.tsx`: серверные, переводы через `await getTranslations()`.
+- `src/app/[locale]/(app)/page.tsx` и `src/widgets/Header/Header.tsx`: серверные, переводы через `await getTranslations()`.
 - `src/widgets/BalanceCard/BalanceCard.tsx`: клиентский, переводы через `useTranslations()`, данные через RTK Query.
 - `src/shared/ui/Container`: без директивы, работает в обоих мирах.
 
@@ -98,6 +101,14 @@ src/
 - `src/mocks/handlers.ts`: обработчики с ключами вида `'GET /me/balance'`. Новый эндпоинт: добавить строку сюда.
 
 Переход на настоящий бэкенд: `NEXT_PUBLIC_API_MOCKS=false`. Код эндпоинтов и компонентов менять не нужно. Контракт API описан в `PLAN.md`.
+
+## Вход
+
+Вход только через Google, Сбер ID и T-Банк ID. Поток одинаков для всех провайдеров, его описание лежит в `src/features/auth/api/authApi.ts`, а контракт в `docs/openapi.yaml`.
+
+- Сессию хранит httpOnly-cookie `pxbit_session`, её ставит бэкенд. `proxy.ts` пускает в приватные роуты только с ней. Публичные пути перечислены в `src/shared/config/auth.ts`.
+- На ответ 401 `baseApi` перезагружает страницу на `/login?returnTo=…`.
+- С моками кнопка входа сразу возвращает на колбэк, будто пользователь согласился у провайдера. Выйти можно через меню профиля.
 
 ## Деньги
 

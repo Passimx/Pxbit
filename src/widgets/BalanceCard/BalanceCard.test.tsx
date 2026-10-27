@@ -1,24 +1,15 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { NextIntlClientProvider } from 'next-intl';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { resetMockDb } from '@/mocks/db';
-import { StoreProvider } from '@/store/StoreProvider';
+import { renderWithProviders } from '@/test/renderWithProviders';
 
 import { BalanceCard } from './BalanceCard';
-import messages from '../../../messages/ru.json';
 
-const renderCard = () =>
-  render(
-    <NextIntlClientProvider locale="ru" messages={messages}>
-      <StoreProvider>
-        <BalanceCard />
-      </StoreProvider>
-    </NextIntlClientProvider>,
-  );
+const renderCard = () => renderWithProviders(<BalanceCard />);
 
 describe('<BalanceCard />', () => {
-  beforeEach(resetMockDb);
+  beforeEach(() => resetMockDb());
 
   it('показывает баланс в валюте из профиля', async () => {
     renderCard();

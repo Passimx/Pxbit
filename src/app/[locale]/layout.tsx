@@ -5,7 +5,6 @@ import { getTranslations } from 'next-intl/server';
 
 import { routing } from '@/i18n/routing';
 import { StoreProvider } from '@/store/StoreProvider';
-import { Header } from '@/widgets/Header';
 
 import '../globals.css';
 
@@ -29,10 +28,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
     <html lang={locale}>
       <body>
         <NextIntlClientProvider>
-          <StoreProvider>
-            <Header />
-            <main>{children}</main>
-          </StoreProvider>
+          {/* Хедер и <main> задают layout'ы групп: (app) для приватной части, (auth) для входа. */}
+          <StoreProvider>{children}</StoreProvider>
         </NextIntlClientProvider>
       </body>
     </html>

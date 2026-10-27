@@ -1,0 +1,217 @@
+openapi: 3.1.0
+info:
+  title: Pxbit API
+  version: 0.2.0
+  description: |
+    Контракт между фронтендом и бэкендом. Сейчас его реализуют моки в `src/mocks/handlers.ts`.
+
+    Сессия: httpOnly-cookie `pxbit_session` (Secure, SameSite=Lax), которую ставит бэкенд.
+    Cookie ставится на общий с фронтендом домен (например `.pxbit.com`), потому что фронт
+    проверяет её наличие в proxy.ts. Запросы идут с `credentials: 'include'`, поэтому CORS
+    должен разрешать origin фронтенда и `Access-Control-Allow-Credentials: true`.
+
+    На любой эндпоинт, кроме `/auth/*`, без валидной сессии сервер отвечает 401
+    и снимает cookie (`Set-Cookie: pxbit_session=; Max-Age=0`).
+
+    Деньги передаются строками с десятичной точкой (`"1250.500000"`), никогда числами.
+servers:
+  - url: http://localhost:3000/api
+
+components:
+  securitySchemes:
+    session:
+      type: apiKey
+      in: cookie
+      name: pxbit_session
+
+  schemas:
+    Decimal:
+      type: string
+      pattern: '^-?\d+(\.\d+)?$'
+      examples: ['1250.500000']
+    FiatCurrency:
+      type: string
+      enum: [RUB, CNY, USD]
+    AuthProvider:
+      type: string
+      enum: [google, sber, tbank]
+    User:
+      type: object
+      required: [id, nickname, avatarUrl, displayCurrency]
+      properties:
+        id: { type: string, examples: ['PX-104582'] }
+        nickname: { type: string }
+        avatarUrl: { type: [string, 'null'], format: uri }
+        displayCurrency: { $ref: '#/components/schemas/FiatCurrency' }
+    Balance:
+      type: object
+      required: [asset, available, locked]
+      properties:
+        asset: { const: USDT }
+        available: { $ref: '#/components/schemas/Decimal' }
+        locked:
+          $ref: '#/components/schemas/Decimal'
+          description: Заблокировано под активные сделки
+    Rates:
+      type: object
+      required: [base, rates, updatedAt]
+      properties:
+        base: { const: USDT }
+        rates:
+          type: object
+          description: Сколько единиц фиата стоит 1 USDT
+          required: [RUB, CNY, USD]
+          properties:
+            RUB: { $ref: '#/components/schemas/Decimal' }
+            CNY: { $ref: '#/components/schemas/Decimal' }
+            USD: { $ref: '#/components/schemas/Decimal' }
+        updatedAt: { type: string, format: date-time }
+    Error:
+      type: object
+      required: [message]
+      properties:
+        message: { type: string }
+
+  parameters:
+    provider:
+      name: provider
+      in: path
+      required: true
+      schema: { $ref: '#/components/schemas/AuthProvider' }
+
+  responses:
+    Unauthorized:
+      description: Нет сессии или она истекла
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+
+security:
+  - session: []
+
+paths:
+  /auth/{provider}/start:
+    post:
+      summary: Начать вход через OAuth-провайдера
+      description: |
+        Бэкенд генерирует `state` (и PKCE `code_verifier`, если провайдер поддерживает),
+        сохраняет их у себя (например, в короткоживущей cookie) и возвращает адрес страницы
+        провайдера. `redirectUri` должен совпадать с зарегистрированным у провайдера.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/provider' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [redirectUri]
+              properties:
+                redirectUri: { type: string, format: uri, examples: ['https://pxbit.com/auth/callback/google'] }
+      responses:
+        '200':
+          description: Адрес, на который нужно отправить пользователя
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [authorizeUrl]
+                properties:
+                  authorizeUrl: { type: string, format: uri }
+
+  /auth/{provider}/callback:
+    post:
+      summary: Завершить вход
+      description: |
+        Фронт передаёт `code` и `state`, с которыми провайдер вернул пользователя.
+        Бэкенд сверяет `state`, меняет `code` на токены провайдера, находит или создаёт
+        пользователя и ставит cookie сессии.
+      security: []
+      parameters: [{ $ref: '#/components/parameters/provider' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code, state, redirectUri]
+              properties:
+                code: { type: string }
+                state: { type: string }
+                redirectUri: { type: string, format: uri }
+      responses:
+        '200':
+          description: Вход выполнен, в ответе `Set-Cookie` с сессией
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+        '400':
+          description: state не совпал или code недействителен
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /auth/logout:
+    post:
+      summary: Выйти
+      description: Завершает сессию на сервере и снимает cookie. Без сессии тоже отвечает успехом.
+      security: []
+      responses:
+        '204': { description: Сессия завершена }
+
+  /me:
+    get:
+      summary: Текущий пользователь
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /me/settings:
+    patch:
+      summary: Изменить настройки профиля
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayCurrency: { $ref: '#/components/schemas/FiatCurrency' }
+      responses:
+        '200':
+          description: Обновлённый пользователь
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '422':
+          description: Неизвестная валюта
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /me/balance:
+    get:
+      summary: Баланс в USDT
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Balance' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /rates:
+    get:
+      summary: Курсы USDT к фиату
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Rates' }
+        '401': { $ref: '#/components/responses/Unauthorized' }

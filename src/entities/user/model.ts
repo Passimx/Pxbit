@@ -5,6 +5,8 @@ import { fiatCurrencySchema } from '@/shared/config/currencies';
 export const userSchema = z.object({
   id: z.string(),
   nickname: z.string(),
+  /** null: аватар не загружен, показываем инициалы. */
+  avatarUrl: z.url().nullable(),
   /** Валюта, в которой пользователь хочет видеть суммы. Деньги при этом всегда в USDT. */
   displayCurrency: fiatCurrencySchema,
 });

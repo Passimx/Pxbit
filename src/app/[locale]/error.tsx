@@ -15,11 +15,13 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
   }, [error]);
 
   return (
-    <Container>
-      <h1>{t('title')}</h1>
-      <button type="button" onClick={reset}>
-        {t('retry')}
-      </button>
-    </Container>
+    <main>
+      <Container>
+        <h1>{t('title')}</h1>
+        <button type="button" onClick={reset}>
+          {t('retry')}
+        </button>
+      </Container>
+    </main>
   );
 }
