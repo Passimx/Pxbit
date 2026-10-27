@@ -1,0 +1,9 @@
+.page {
+  display: grid;
+  gap: 24px;
+  padding-block: 48px;
+}
+
+.description {
+  color: var(--color-muted);
+}
