@@ -5,6 +5,7 @@
   --color-border: #e5e5e5;
   --color-surface: #fafafa;
   --color-surface-hover: #f0f0f0;
+  --color-accent: #2563eb;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +16,7 @@
     --color-border: #262626;
     --color-surface: #171717;
     --color-surface-hover: #262626;
+    --color-accent: #60a5fa;
   }
 }
 

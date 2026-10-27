@@ -8,6 +8,8 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    // Тесты всегда ходят в моки, а не в сеть.
+    env: { NEXT_PUBLIC_API_MOCKS: 'true' },
     setupFiles: ['./vitest.setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],
     css: { modules: { classNameStrategy: 'non-scoped' } },

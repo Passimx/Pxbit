@@ -11,3 +11,5 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Project conventions
 
 See `README.md` for structure, server/client component rules, Redux and i18n conventions. Run `npm run check` before committing.
+
+The roadmap lives in `PLAN.md`. Work through it stage by stage, mark items `[~]` while in progress and `[x]` when done, and record new decisions and API contract changes there.

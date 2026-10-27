@@ -50,15 +50,18 @@ src/
   i18n/                настройка next-intl: routing, request, navigation
   proxy.ts             определение локали и редиректы (бывший middleware)
   store/               Redux store, типизированные хуки, StoreProvider, baseApi
-  features/<name>/     фичи: слайс, компоненты, стили, тесты, index.ts
-  widgets/             крупные блоки страницы из нескольких фич (Header)
+  widgets/             крупные блоки страницы из фич и сущностей (Header, BalanceCard)
+  features/<name>/     действия пользователя: компоненты, стили, тесты, index.ts (display-currency)
+  entities/<name>/     доменные модели: zod-схемы, API-эндпоинты, чистая логика (user, wallet)
   shared/              переиспользуемое без бизнес-логики: ui, config, lib
+  mocks/               фейковый бэкенд для разработки и тестов
 ```
 
 Правила импортов:
 
-- Из фичи снаружи импортируем только через её `index.ts`: `@/features/counter`. Глубокие импорты запрещены ESLint.
-- `shared` ни от чего не зависит, `features` зависят от `shared`, `widgets` от `features` и `shared`, `app` от всех.
+- Фичи, сущности и виджеты импортируем снаружи только через `index.ts`: `@/entities/wallet`. Глубокие импорты запрещены ESLint.
+- Слои зависят только от тех, что ниже: `app → widgets → features → entities → shared`.
+- `@/mocks` импортирует только `baseApi` (и тесты).
 
 ## Серверные и клиентские компоненты
 
@@ -73,7 +76,7 @@ src/
 Примеры:
 
 - `src/app/[locale]/page.tsx` и `src/widgets/Header/Header.tsx`: серверные, переводы через `await getTranslations()`.
-- `src/features/counter/Counter.tsx`: клиентский, переводы через `useTranslations()`, состояние в Redux.
+- `src/widgets/BalanceCard/BalanceCard.tsx`: клиентский, переводы через `useTranslations()`, данные через RTK Query.
 - `src/shared/ui/Container`: без директивы, работает в обоих мирах.
 
 Держите `'use client'` как можно ниже по дереву: серверная страница может рендерить клиентские «островки», но не наоборот (клиентский компонент может получать серверные только через `children`).
@@ -84,7 +87,21 @@ src/
 - `StoreProvider` подключён в `src/app/[locale]/layout.tsx`.
 - Используйте `useAppSelector` / `useAppDispatch` из `@/store/hooks`, а не голые хуки react-redux.
 - Новые слайсы добавляются в `combineSlices(...)` в `src/store/store.ts`.
-- Запросы к API описываются через `baseApi.injectEndpoints(...)` внутри фичи. Базовый URL берётся из `NEXT_PUBLIC_API_URL`.
+- Запросы к API описываются через `baseApi.injectEndpoints(...)` в сущности или фиче. Базовый URL берётся из `NEXT_PUBLIC_API_URL`.
+- Каждый эндпоинт проверяет ответ zod-схемой через `responseSchema`. Если ответ не совпал со схемой, запрос завершается ошибкой `CUSTOM_ERROR`.
+
+## Моки API
+
+С `NEXT_PUBLIC_API_MOCKS=true` запросы RTK Query обрабатывает `src/mocks` вместо сети. Тесты всегда работают на моках.
+
+- `src/mocks/db.ts`: данные в памяти, повторяют форму ответов API.
+- `src/mocks/handlers.ts`: обработчики с ключами вида `'GET /me/balance'`. Новый эндпоинт: добавить строку сюда.
+
+Переход на настоящий бэкенд: `NEXT_PUBLIC_API_MOCKS=false`. Код эндпоинтов и компонентов менять не нужно. Контракт API описан в `PLAN.md`.
+
+## Деньги
+
+Баланс всегда хранится в USDT, фиат (RUB, CNY, USD) используется только для отображения. Суммы приходят и хранятся строками. Арифметика идёт на `bigint` (`@/shared/lib/decimal`), никогда во `float`. Пересчёт в фиат округляет вниз.
 
 ## Переводы
 
@@ -103,7 +120,7 @@ src/
 
 ```
 feat: добавить страницу профиля
-fix(counter): не уходить в минус
+fix(wallet): округлять баланс вниз
 chore: обновить зависимости
 ```
 

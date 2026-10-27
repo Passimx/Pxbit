@@ -1,10 +1,8 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit';
 
-import { counterSlice } from '@/features/counter/counterSlice';
-
 import { baseApi } from './api/baseApi';
 
-const rootReducer = combineSlices(counterSlice, baseApi);
+const rootReducer = combineSlices(baseApi);
 
 export type RootState = ReturnType<typeof rootReducer>;
 

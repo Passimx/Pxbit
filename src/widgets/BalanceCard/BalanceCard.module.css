@@ -1,0 +1,81 @@
+.card {
+  display: grid;
+  gap: 20px;
+  max-width: 480px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.total {
+  display: grid;
+  gap: 2px;
+}
+
+.totalFiat {
+  font-size: 32px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.breakdown {
+  display: grid;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  justify-content: space-between;
+  font-variant-numeric: tabular-nums;
+}
+
+.muted {
+  color: var(--color-muted);
+}
+
+.rate {
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.state {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  min-height: 120px;
+  align-content: center;
+  color: var(--color-muted);
+}
+
+.retry {
+  padding: 6px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font: inherit;
+  cursor: pointer;
+}
+
+.retry:hover {
+  background: var(--color-surface-hover);
+}

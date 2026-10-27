@@ -7,3 +7,8 @@
 .description {
   color: var(--color-muted);
 }
+
+.intro {
+  display: grid;
+  gap: 8px;
+}

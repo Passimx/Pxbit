@@ -25,14 +25,19 @@ export default defineConfig([
       'no-restricted-imports': [
         'error',
         {
-          patterns: [{ group: ['@/features/*/*'], message: 'Импортируйте фичу через её index.ts: @/features/<name>' }],
+          patterns: [
+            { group: ['@/features/*/*'], message: 'Импортируйте фичу через её index.ts: @/features/<name>' },
+            { group: ['@/entities/*/*'], message: 'Импортируйте сущность через её index.ts: @/entities/<name>' },
+            { group: ['@/widgets/*/*'], message: 'Импортируйте виджет через его index.ts: @/widgets/<name>' },
+            { group: ['@/mocks', '@/mocks/*'], message: 'Моки подключаются только в baseApi' },
+          ],
         },
       ],
     },
   },
   {
-    // Внутри store допустим прямой импорт слайсов, чтобы не тянуть клиентские компоненты.
-    files: ['src/store/**'],
+    // store подключает моки и слайсы напрямую, тесты сбрасывают моки между запусками.
+    files: ['src/store/**', 'src/mocks/**', '**/*.test.{ts,tsx}'],
     rules: { 'no-restricted-imports': 'off' },
   },
   // Отключает правила, которые конфликтуют с Prettier. Должен идти последним.
