@@ -15,7 +15,7 @@ info:
 
     Деньги передаются строками с десятичной точкой (`"1250.500000"`), никогда числами.
 servers:
-  - url: http://localhost:3000/api
+  - url: http://localhost:4000
 
 components:
   securitySchemes:

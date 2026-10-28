@@ -12,4 +12,4 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 See `README.md` for structure, server/client component rules, Redux and i18n conventions. Run `npm run check` before committing.
 
-The roadmap lives in `PLAN.md`. Work through it stage by stage, mark items `[~]` while in progress and `[x]` when done, and record new decisions and API contract changes there.
+This repo lives in a workspace next to the backend (`../api`). The shared roadmap is `../PLAN.md` and the cross-repo workflow is in `../CLAUDE.md`: mark plan items `[~]` while in progress and `[x]` when done, and record new decisions there.

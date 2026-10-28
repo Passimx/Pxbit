@@ -4,27 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="94dd79dd-c20a-4c3a-b0a5-7acc83709d95" name="Changes" comment="feat: add main page">
+    <list default="true" id="94dd79dd-c20a-4c3a-b0a5-7acc83709d95" name="Changes" comment="feat: add login page">
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PLAN.md" beforeDir="false" afterPath="$PROJECT_DIR$/PLAN.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGENTS.md" beforeDir="false" afterPath="$PROJECT_DIR$/AGENTS.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PLAN.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/messages/ru.json" beforeDir="false" afterPath="$PROJECT_DIR$/messages/ru.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/error.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/error.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/not-found.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/not-found.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/page.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(app)/page.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(app)/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entities/user/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/user/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entities/user/model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/user/model.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mocks/db.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/mocks/db.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mocks/handlers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/mocks/handlers.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mocks/mockBaseQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/mocks/mockBaseQuery.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/proxy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/proxy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store/api/baseApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/api/baseApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/BalanceCard/BalanceCard.test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/BalanceCard/BalanceCard.test.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/Header/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vitest.config.mts" beforeDir="false" afterPath="$PROJECT_DIR$/vitest.config.mts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/openapi.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/openapi.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/config/env.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/config/env.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +85,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1793068919158</updated>
-      <workItem from="1793068920304" duration="6337000" />
+      <workItem from="1793068920304" duration="14609000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add main page">
       <option name="closed" value="true" />
@@ -108,7 +95,15 @@
       <option name="project" value="LOCAL" />
       <updated>1793107583441</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: add login page">
+      <option name="closed" value="true" />
+      <created>1793108648809</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1793108648809</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -116,6 +111,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: add main page" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add main page" />
+    <MESSAGE value="feat: add login page" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add login page" />
   </component>
 </project>
